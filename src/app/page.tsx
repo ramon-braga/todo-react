@@ -11,12 +11,19 @@ const Page = () => {
   ]);
 
   const handleAddButton = () => {
+    if (itemInput.trim() === '') return;
     setList([
       ...list,
       { label: itemInput, checked: false }
     ]);
     setItemInput('');
   }
+
+const deleteItem = (index: number) => {
+  setList(
+    list.filter((item, key) => key !== index)
+  );
+}
 
   return (
     <div className="w-screen h-screen flex flex-col items-center text-2xl">
@@ -32,10 +39,19 @@ const Page = () => {
         />
         <button onClick={handleAddButton} className="text-4xl px-3 rounded-md hover:border hover:border-gray-500">+</button>
       </div>
-      <p className="py-3">{list.length} tasks listed</p>
+      
+      {list.length > 1 &&
+      <p className="py-3">{list.length} tasks listed</p>}
+
       <ul className="w-full max-w-lg list-none">
-        {list.map(item => (
-          <li className="flex justify-between border-b border-b-gray-500 py-2">{item.label}<button className="bg-red-700 text-xl px-2 rounded-md hover:underline">X</button></li>
+        {list.map((item, index) => (
+          <li
+            className="flex justify-between border-b border-b-gray-500 py-2">{item.label}
+            <button
+              onClick={() => deleteItem(index)}
+              className="bg-red-700 text-xl px-2 rounded-md hover:underline">X
+            </button>
+          </li>
         ))}
       </ul>
 
