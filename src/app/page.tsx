@@ -5,10 +5,7 @@ import { useState } from "react";
 
 const Page = () => {
   const [itemInput, setItemInput] = useState('');
-  const [list, setList] = useState<TodoItem[]>([
-    { id: 1, label: 'Do homework', checked: false },
-    { id: 2, label: 'Buy cake', checked: false }
-  ]);
+  const [list, setList] = useState<TodoItem[]>([]);
 
   const handleAddButton = () => {
     if (itemInput.trim() === '') return;
