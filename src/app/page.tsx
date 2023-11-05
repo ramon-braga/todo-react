@@ -6,24 +6,37 @@ import { useState } from "react";
 const Page = () => {
   const [itemInput, setItemInput] = useState('');
   const [list, setList] = useState<TodoItem[]>([
-    { label: 'Do homework', checked: false },
-    { label: 'Buy cake', checked: false }
+    { id: 1, label: 'Do homework', checked: false },
+    { id: 2, label: 'Buy cake', checked: false }
   ]);
 
   const handleAddButton = () => {
     if (itemInput.trim() === '') return;
     setList([
       ...list,
-      { label: itemInput, checked: false }
+      { id: list.length + 1, label: itemInput, checked: false }
     ]);
     setItemInput('');
   }
 
-const deleteItem = (index: number) => {
-  setList(
-    list.filter((item, key) => key !== index)
-  );
-}
+  const deleteItem = (id: number) => {
+    setList(
+      list.filter(item => item.id !== id)
+    );
+  }
+
+  const toggleItem = (id: number) => {
+    let newList = [...list];
+
+    for (let i in newList) {
+      if (newList[i].id === id) {
+        newList[i].checked = !newList[i].checked;
+      }
+    }
+
+    setList(newList);
+  }
+
 
   return (
     <div className="w-screen h-screen flex flex-col items-center text-2xl">
@@ -44,15 +57,22 @@ const deleteItem = (index: number) => {
       <p className="py-3">{list.length} tasks listed</p>}
 
       <ul className="w-full max-w-lg list-none">
-        {list.map((item, index) => (
+
+        {list.map(item => (
           <li
-            className="flex justify-between border-b border-b-gray-500 py-2">{item.label}
+            className="flex justify-between border-b border-b-gray-500 py-2">
+              <div>
+                <input onClick={() => toggleItem(item.id)} className="mr-3 w-5 h-5" type="checkbox" checked={item.checked} />
+                {item.label}
+              </div>
+
             <button
-              onClick={() => deleteItem(index)}
+              onClick={() => deleteItem(item.id)}
               className="bg-red-700 text-xl px-2 rounded-md hover:underline">X
             </button>
           </li>
         ))}
+
       </ul>
 
     </div>
